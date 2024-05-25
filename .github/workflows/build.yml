@@ -19,12 +19,13 @@ jobs:
 
       - name: Inject Secrets into Config file
         run: |
-          CLIENT_ID=${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
-          REDIRECT_URL=${{ secrets.REDIRECT_URL }}
-          sed -i "s|CLIENT_ID_PLACEHOLDER|${CLIENT_ID}|g" src/main/java/mx/alfador/touchportal/Config.java
-          sed -i "s|CLIENT_SECRET_PLACEHOLDER|${CLIENT_SECRET}|g" src/main/java/mx/alfador/touchportal/Config.java
-          sed -i "s|REDIRECT_URL_PLACEHOLDER|${REDIRECT_URL}|g" src/main/java/mx/alfador/touchportal/Config.java
+          $clientId = '${{ secrets.CLIENT_ID }}'
+          $clientSecret = '${{ secrets.CLIENT_SECRET }}'
+          $redirectUrl = '${{ secrets.REDIRECT_URL }}'
+          (Get-Content src/main/java/mx/alfador/touchportal/Config.java) -replace 'CLIENT_ID_PLACEHOLDER', $clientId | Set-Content src/main/java/mx/alfador/touchportal/Config.java
+          (Get-Content src/main/java/mx/alfador/touchportal/Config.java) -replace 'CLIENT_SECRET_PLACEHOLDER', $clientSecret | Set-Content src/main/java/mx/alfador/touchportal/Config.java
+          (Get-Content src/main/java/mx/alfador/touchportal/Config.java) -replace 'REDIRECT_URL_PLACEHOLDER', $redirectUrl | Set-Content src/main/java/mx/alfador/touchportal/Config.java
+        shell: pwsh
 
       - name: Run build on ${{ matrix.os }}
         uses: actions/setup-java@v4
