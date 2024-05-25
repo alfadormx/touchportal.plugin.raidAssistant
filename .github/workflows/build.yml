@@ -19,9 +19,13 @@ jobs:
 
       - name: Inject Secrets into Config file
         run: |
-          sed -i 's/CLIENT_ID_PLACEHOLDER/${{ secrets.CLIENT_ID }}/g' src/main/java/mx/alfador/touchportal/Config.java
-          sed -i 's/CLIENT_SECRET_PLACEHOLDER/${{ secrets.CLIENT_SECRET }}/g' src/main/java/mx/alfador/touchportal/Config.java
-          sed -i 's/REDIRECT_URL_PLACEHOLDER/${{ secrets.REDIRECT_URL }}/g' src/main/java/mx/alfador/touchportal/Config.java
+          sed -i 's/CLIENT_ID_PLACEHOLDER/'"$CLIENT_ID"'/g' src/main/java/mx/alfador/touchportal/Config.java
+          sed -i 's/CLIENT_SECRET_PLACEHOLDER/'"$CLIENT_SECRET"'/g' src/main/java/mx/alfador/touchportal/Config.java
+          sed -i 's/REDIRECT_URL_PLACEHOLDER/'"$REDIRECT_URL"'/g' src/main/java/mx/alfador/touchportal/Config.java
+        env:
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          REDIRECT_URL: ${{ secrets.REDIRECT_URL }}
 
       - name: Run build on ${{ matrix.os }}
         uses: actions/setup-java@v4
