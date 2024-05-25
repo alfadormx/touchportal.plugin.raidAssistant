@@ -1,0 +1,53 @@
+name: build
+
+on:
+  release:
+    types: [published]
+
+permissions: 
+  contents: write
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Inject Secrets into Config file
+        run: |
+          sed -i 's/CLIENT_ID_PLACEHOLDER/${{ secrets.CLIENT_ID }}/g' src/main/java/mx/alfador/touchportal/Config.java
+          sed -i 's/CLIENT_SECRET_PLACEHOLDER/${{ secrets.CLIENT_SECRET }}/g' src/main/java/mx/alfador/touchportal/Config.java
+          sed -i 's/REDIRECT_URL_PLACEHOLDER/${{ secrets.REDIRECT_URL }}/g' src/main/java/mx/alfador/touchportal/Config.java
+
+      - name: Run build on ${{ matrix.os }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          architecture: x64
+
+      - name: Setup Grade
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+          
+      - name: Build with gradle
+        run: ./gradlew packagePlugin
+
+      - name: uploading tpp for ${{ matrix.os}}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: "./build/plugin/*.tpp"
+          overwrite: true
+          file_glob: true
+
+      - name: uploading pages for ${{ matrix.os}}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: "./touchportal.pages/*.tpz2"
+          overwrite: true
+          file_glob: true

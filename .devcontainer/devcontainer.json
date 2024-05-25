@@ -1,0 +1,26 @@
+{
+	"name": "touchportal.plugin.raidAssistant",
+	"image": "mcr.microsoft.com/devcontainers/java:dev-8-jdk-bullseye",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"shutdownAction": "stopContainer",
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "none",
+			"installMaven": "true",
+			"installGradle": "true"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"window.title": "touchportal.plugin.raidAssistant"
+			},
+			"extensions": [
+				"vscjava.vscode-java-pack",
+				"vscjava.vscode-gradle",
+				"mhutchie.git-graph",
+				"PKief.material-icon-theme"
+			]
+		}
+	}
+}

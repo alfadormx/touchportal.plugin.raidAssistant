@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "TPP Start",
+            "type": "java",
+            "request": "launch",
+            "mainClass": "mx.alfador.touchportal.RaidAssistantPlugin",
+            "projectName": "touchportal-raidassistant",
+            "args": "start"
+        }
+    ]
+}

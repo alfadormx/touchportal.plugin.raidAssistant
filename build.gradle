@@ -1,0 +1,37 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.5.0'
+    id 'java'
+    id 'com.github.gmazzo.buildconfig' version '3.0.0'
+    id 'com.christophecvb.touchportal.plugin-packager' version "9.0.0+"
+}
+
+def mainClassSimpleName = 'RaidAssistantPlugin'
+def mainClassPackage = 'mx.alfador.touchportal'
+def versionCode = 1000
+group mainClassPackage
+version '1.0.0'
+
+tpPlugin.mainClassSimpleName = mainClassSimpleName
+
+buildConfig {
+    packageName = project.group
+
+    buildConfigField 'String', 'NAME', "\"${project.name}\""
+    buildConfigField 'String', 'VERSION_NAME', "\"${version}\""
+    buildConfigField 'long', 'VERSION_CODE', versionCode + ''
+}
+
+dependencies {
+    implementation 'com.christophecvb.touchportal:plugin-sdk:9.0.0+'
+    implementation 'com.github.twitch4j:twitch4j:1.15.0'
+    implementation 'org.imgscalr:imgscalr-lib:4.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    annotationProcessor 'com.christophecvb.touchportal:plugin-sdk-annotations-processor:9.0.0+'
+}
+
+repositories {
+    maven {
+        url = "https://s01.oss.sonatype.org/content/repositories/snapshots"
+    }
+    mavenCentral()
+}
